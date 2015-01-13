@@ -20,7 +20,7 @@
         <link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
         <!-- Theme style -->
         <link href="css/AdminLTE.css" rel="stylesheet" type="text/css" />
-        <script src="js/jquery-1.11.0.js"></script>
+        <!-- <script src="js/jquery-1.11.0.js"></script> -->
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -57,6 +57,40 @@
         });
     </script>
 
+    <script>
+        $(function() {
+            
+            var x = (function() {   
+                    console.log("helloo")
+                    var arr = []
+                    $.ajax({
+                        url: "http://localhost/cgi/cloud/getBucketsSize.py",
+                        async: false,
+                        success: function(result){
+                            $.each(result, function(k,v){
+                               console.log(k,v)
+                               arr.push(v);
+                            });
+                        }
+                    });
+                    console.log(arr);
+                    return arr;
+                })();
+
+            // Bar Chart
+            Morris.Bar({
+                element: 'buckets-size-bar-chart',
+                data: x,
+                xkey: 'category',
+                ykeys: ['percentage'],
+                labels: ['Percentage'],
+                hideHover: 'auto',
+                resize: true,
+                ymax: 1000
+            });  
+        });          
+
+    </script>
 
 
 
@@ -535,14 +569,14 @@
                             <div class="nav-tabs-custom">
                                 <!-- Tabs within a box -->
                                 <ul class="nav nav-tabs pull-right">
-                                    <li class="active"><a href="#revenue-chart" data-toggle="tab">Area</a></li>
-                                    <li><a href="#bucket-allocation-chart" data-toggle="tab">Donut</a></li>
+                                    <li><a href="#buckets-size-bar-chart" data-toggle="tab">Area</a></li>
+                                    <li class="active"><a href="#bucket-allocation-chart" data-toggle="tab">Donut</a></li>
                                     <li class="pull-left header"><i class="fa fa-inbox"></i> Sales</li>
                                 </ul>
                                 <div class="tab-content no-padding">
                                     <!-- Morris chart - Sales -->
-                                    <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: 300px;"></div>
-                                    <div class="chart tab-pane" id="bucket-allocation-chart" style="position: relative; height: 300px;"></div>
+                                    <div class="chart tab-pane" id="buckets-size-bar-chart" style="position: inherit; height: 300px;"></div>
+                                    <div class="chart tab-pane active" id="bucket-allocation-chart" style="position: relative; height: 300px;"></div>
                                 </div>
                             </div><!-- /.nav-tabs-custom -->
 
