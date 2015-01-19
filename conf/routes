@@ -6,7 +6,7 @@
 GET    /                                                          controllers.Application.index()
 GET    /compute/AmazonS3/Buckets                                  controllers.Application.listBuckets()
 GET    /compute/AmazonS3/BucketSize/:bucketName                   controllers.Application.bucketSize(bucketName:String)
-
+POST    /compute/AmazonS3/Requests/:reqNum                        controllers.Application.Requests(reqNum:String)
 
 
 

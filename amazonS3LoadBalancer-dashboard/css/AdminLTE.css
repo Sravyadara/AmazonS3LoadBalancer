@@ -1287,6 +1287,17 @@ body > .header .logo .icon {
   background: rgba(0, 0, 0, 0.1);
   text-decoration: none;
 }
+.submit-button {
+  position: relative;
+  text-align: center;
+  padding: 18px 0;
+  color: #fff;
+  color: rgba(255, 255, 255, 0.8);
+  display: block;
+  z-index: 1;
+  
+  text-decoration: none;
+}
 .small-box > .small-box-footer:hover {
   color: #fff;
   background: rgba(0, 0, 0, 0.15);
@@ -1889,6 +1900,11 @@ Component: timeline
 .btn.btn-primary {
   background-color: #3c8dbc;
   border-color: #367fa9;
+}
+.btn.btn-primary1 {
+  background-color: #3c8dbc;
+  border-color: #367fa9;
+  width:250px;
 }
 .btn.btn-primary:hover,
 .btn.btn-primary:active,
