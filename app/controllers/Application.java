@@ -63,23 +63,35 @@ public class Application extends Controller {
     	return ok(jsonResponse);
     }
     
-   public static Result Requests(String reqNum){
-	   printHeaders();
-	   //String jsonResponse;
-	   System.out.println(request().body().toString());
-	   Map<String,String[]> jsonMap = request().body().asFormUrlEncoded();
-	   //TODO check for arrayOutOfBounds Exception if userName is not present in incoming request
-	   String json = jsonMap.get("username")[0];
-	   String newJson = json.substring(2, json.length()-2);
-	   String st[] = newJson.split(",");
-	   String newSt[] = new String[st.length];
-	   for(int i=0; i< st.length; i++)
-	   {
-	       newSt[i] = st[i].replaceAll("\"", "");
-	        System.out.println(newSt[i]);
-	        }
-		  return ok("successs");	  
-   } 
+   public static Result Requests(String reqNum) throws Exception{
+           printHeaders();
+	   String jsonResponse;
+           // System.out.println("sample----------------    test "+ reqNum);
+           //System.out.println(request().body().toString());
+           Map<String,String[]> jsonMap = request().body().asFormUrlEncoded();
+           //TODO check for arrayOutOfBounds Exception if userName is not present in incoming request
+           String json = jsonMap.get("username")[0];
+           String newJson = json.substring(2, json.length()-2);
+           String st[] = newJson.split(",");
+           String newSt[] = new String[st.length];
+           String myargs[] = new String[st.length+1];
+           String justnums[] = new String[2];
+           for(int i=0; i< st.length; i++)
+           {
+               newSt[i] = st[i].replaceAll("\"", "");
+               //System.out.println(newSt[i]);
+               justnums = newSt[i].split(" ");
+               myargs[i] = justnums[1];
+               //System.out.println(myargs[i]);
+           }
+           myargs[st.length] = reqNum;
+           s3modify alg = new s3modify();
+
+
+           alg.main(myargs);
+           System.out.println("Done with alg");
+                  return ok("successs");
+   }
 
    public static Result getRegions() throws IOException{
        printHeaders(); 
