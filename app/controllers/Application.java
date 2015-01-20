@@ -1,5 +1,6 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -14,6 +15,13 @@ import com.google.gson.Gson;
 import play.*;
 import play.mvc.*;
 import views.html.*;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
+
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.AmazonServiceException;
   
 public class Application extends Controller {
 	
@@ -26,11 +34,7 @@ public class Application extends Controller {
 
     
     public static Result listBuckets(){
-      response().setHeader("Content-Type", "application/json");
-      response().setHeader("Access-Control-Allow-Origin", "*");       // Need to add the correct domain in here!!
-      response().setHeader("Access-Control-Allow-Methods", "GET");   // Only allow POST
-      response().setHeader("Access-Control-Max-Age", "300");          // Cache response for 5 minutes
-      response().setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");         // Ensure this header is also allowed!  
+      printHeaders();
   	  List<BucketDAO> Buckets = s3handler.getBucketList() ;
   	  Gson gson = new Gson();
   	  String jsonResponse = gson.toJson(Buckets);
@@ -39,24 +43,29 @@ public class Application extends Controller {
     
     
     public static Result bucketSize(String bucketName){
-        response().setHeader("Content-Type", "application/json");
-        response().setHeader("Access-Control-Allow-Origin", "*");       // Need to add the correct domain in here!!
-        response().setHeader("Access-Control-Allow-Methods", "GET");   // Only allow POST
-        response().setHeader("Access-Control-Max-Age", "300");          // Cache response for 5 minutes
-        response().setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");         // Ensure this header is also allowed!  
+      printHeaders();
   	  long BucketSize = s3handler.getBucketSize(bucketName) ;
   	  Gson gson = new Gson();
   	  String jsonResponse = gson.toJson(BucketSize);
   	  return ok(jsonResponse);
     }
     
+    public static Result getBucketDetails(){
+    	printHeaders();
+    	List<BucketDAO> bucketDaoList = new ArrayList<BucketDAO>();
+    	List<BucketDAO> Buckets = s3handler.getBucketList() ;
+    	for( BucketDAO bucket : Buckets){
+    		BucketDAO bucketDao = new BucketDAO(bucket.getName(), bucket.getCreationDate(),bucket.getBucketSize());
+			bucketDaoList.add(bucketDao);
+    	}
+    	Gson gson = new Gson();
+    	String jsonResponse = gson.toJson(bucketDaoList);
+    	return ok(jsonResponse);
+    }
+    
    public static Result Requests(String reqNum){
-	    response().setHeader("Content-Type", "application/json");
-	    response().setHeader("Access-Control-Allow-Origin", "*");       // Need to add the correct domain in here!!
-	    response().setHeader("Access-Control-Allow-Methods", "GET");   // Only allow POST
-	    response().setHeader("Access-Control-Max-Age", "300");          // Cache response for 5 minutes
-	    response().setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");         // Ensure this header is also allowed!  
-	   String jsonResponse;
+	   printHeaders();
+	   //String jsonResponse;
 	   System.out.println(request().body().toString());
 	   Map<String,String[]> jsonMap = request().body().asFormUrlEncoded();
 	   //TODO check for arrayOutOfBounds Exception if userName is not present in incoming request
@@ -71,5 +80,41 @@ public class Application extends Controller {
 	        }
 		  return ok("successs");	  
    } 
+
+   public static Result getRegions() throws IOException{
+       printHeaders(); 
+	   String jsonResponse = "";
+       //try {
+            Process p = Runtime.getRuntime().exec("/usr/bin/python /var/www/cgi/cloud/getRegions.py");
+            BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            Object line;
+            while((line = in.readLine()) != null) {
+                    jsonResponse = jsonResponse + line;
+            }
+                             
+       return ok(jsonResponse);
+    } 
+   
+   public static Result getRegionsSize() throws IOException{
+	   printHeaders(); 
+	   String jsonResponse = "";
+       //try {
+            Process p = Runtime.getRuntime().exec("/usr/bin/python /var/www/cgi/cloud/getBucketsSize1.py");
+            BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            Object line;
+            while((line = in.readLine()) != null) {
+                    jsonResponse = jsonResponse + line;
+            }
+	   return ok(jsonResponse);
+   }
+   
+   public static void printHeaders(){
+       response().setHeader("Content-Type", "application/json");
+       response().setHeader("Access-Control-Allow-Origin", "*");       // Need to add the correct domain in here!!
+       response().setHeader("Access-Control-Allow-Methods", "GET");   // Only allow POST
+       response().setHeader("Access-Control-Max-Age", "300");          // Cache response for 5 minutes
+       response().setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");  	   	
+   }
+   
    
 }

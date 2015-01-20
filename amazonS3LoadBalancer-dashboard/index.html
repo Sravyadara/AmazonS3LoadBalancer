@@ -28,29 +28,29 @@
           <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
           <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
         <![endif]-->
-
+   
     <script>
         $(function() {
                 var x = (function() {
                         var arr = []
                         $.ajax({
-                        url: "http://localhost:80/cgi/cloud/getRegions.py",
+                        url: "http://localhost:9000/compute/AmazonS3/GetRegions",
                         async: false,
                         success: function(result){
                             $.each(result, function(k,v){
-                               console.log(k,v)
+                               //console.log(k,v)
                                arr.push(v);
                             });
                         }
                     });
-                    console.log(arr);
+                    //console.log(arr);
                     return arr;
                 })();
 
             Morris.Donut({
                     element: 'bucket-allocation-chart',
                     resize: true,
-                    colors: ["#3c8dbc", "#f56954", "#00a65a", "#FA5882"],
+                    colors: ["#3c8dbc", "#f56954", "#388796", "#00a65a", "#FA5882"],
                     data: x,
                     hideHover: 'auto'
                 });
@@ -59,21 +59,22 @@
 
     <script>
         $(function() {
+            $("#list-bucket-details").hide();
             
             var x = (function() {   
                     console.log("helloo")
                     var arr = []
                     $.ajax({
-                        url: "http://localhost/cgi/cloud/getBucketsSize.py",
+                        url: "http://localhost:9000/compute/AmazonS3/GetRegionsSize",
                         async: false,
                         success: function(result){
                             $.each(result, function(k,v){
-                               console.log(k,v)
+                               //console.log(k,v)
                                arr.push(v);
                             });
                         }
                     });
-                    console.log(arr);
+                    //console.log(arr);
                     return arr;
                 })();
 
@@ -82,17 +83,81 @@
                 element: 'buckets-size-bar-chart',
                 data: x,
                 xkey: 'category',
-                ykeys: ['percentage'],
-                labels: ['Percentage'],
+                ykeys: ['totalSize'],
+                labels: ['Total Size(MB)'],
                 hideHover: 'auto',
                 resize: true,
-                ymax: 1000
+                ymax: 400
             });  
         });          
 
     </script>
+   
+    <script>
+        
+        $(function() {
+                    $.ajax({
+                        url: "http://localhost:9000/compute/AmazonS3/GetBucketDetails",
+                        async: false,
+                        success: function(result){
+                            if(result) {
+                                var length = result.length;
+                                var data = "";
+                                for (var i=0; i<length; i++){
+                                    data = data + "<tr><td>"+result[i].name+"</td><td>"+result[i].bucketSize+"</td><td>"+result[i].creationDate+"</td></tr>";
+                                }
+                                $("#list-bucket-details").append(data).removeClass("hidden");;
+                            } 
+                        },
+                        error: function(jqXHR, textStatus, errorThrown){
+                           alert('error: ' + textStatus + ': ' + errorThrown);
+                        }
+                    });
+        });
 
+    </script>
+        
+    <script>
+        
+        $(function() {
+            $("#buckets-details").click(function() {
+                $("#list-bucket-details").show();
+                    
+            });
+        });
 
+    </script>
+
+    <style>
+        .hidden{display:none;}
+
+        #instanceList td {
+            text-align: center;
+        }
+        #reservations td {
+            text-align: center;
+        }
+        table {
+            border: 0px solid green;
+        }
+        td {
+            padding: 15px;
+        }
+        th {
+            text-align: center;
+        }
+        .table-align {
+            text-align: center;
+        }
+        #flip {
+            width:15%;
+            margin:auto 84%;
+            padding:10px;
+            text-align:center;
+            background:#e5eecc;
+        }
+
+    </style>
 
 
 
@@ -207,7 +272,7 @@
                                     </p>
                                 </div>
                                 <div class="icon">
-                                    <i class="ion ion-ios7-cloud-upload"></i>
+                                    <i class="ion ion-person-add"></i>
                                 </div>
                                 <a href="#" class="small-box-footer"input type="button" value="Click Me" onclick="location.href='./pages/forms/MultiReq.html'">
                                     More info <i class="fa fa-arrow-circle-right"></i>
@@ -222,13 +287,13 @@
                                         44
                                     </h3>
                                     <p>
-                                        User Registrations
+                                        Buckets Details
                                     </p>
                                 </div>
                                 <div class="icon">
-                                    <i class="ion ion-person-add"></i>
+                                    <i class="ion ion-ios7-cloud-upload"></i>
                                 </div>
-                                <a href="#" class="small-box-footer">
+                                <a id="buckets-details" href="#" class="small-box-footer">
                                     More info <i class="fa fa-arrow-circle-right"></i>
                                 </a>
                             </div>
@@ -312,9 +377,19 @@
                             <!-- solid sales graph -->
 
                         </section><!-- right col -->
+
                     </div><!-- /.row (main row) -->
 
                 </section><!-- /.content -->
+                <div id="" align="center">
+                    <table id="list-bucket-details" class="hidden">
+                        <tr>
+                            <th>Name</th>
+                            <th>Total Size</th>
+                            <th>Creation Date </th>
+                        </tr>
+                    </table>
+                </div>
             </aside><!-- /.right-side -->
         </div><!-- ./wrapper -->
 

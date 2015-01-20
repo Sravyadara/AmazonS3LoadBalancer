@@ -24,6 +24,11 @@ public class BucketDAO{
     	this.bucketSize = bucketSize;
     }
 
+    public BucketDAO(String name, Date creationDate, double bucketSize){
+    	this.name =  name;
+    	this.creationDate = creationDate;
+    	this.bucketSize = bucketSize;
+    }
 	
 	public double getBucketSize() {
 		return bucketSize;
