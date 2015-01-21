@@ -6,7 +6,7 @@ import ConfigParser,json
 conn = S3Connection("<aws_access_key>,<aws_secret_key>")
 buckets = conn.get_all_buckets()
 config = ConfigParser.ConfigParser()
-config.read('/var/www/cgi/cloud/regions.cfg')
+config.read('/usr/local/regions.cfg')
 bucketsDict = {}
 
 for b in buckets:
