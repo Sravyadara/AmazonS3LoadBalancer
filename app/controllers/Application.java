@@ -9,6 +9,8 @@ import java.util.StringTokenizer;
 import model.BucketDAO;
 
 import com.amazonaws.services.s3.model.Bucket;
+import com.amazonaws.services.s3.model.ObjectListing;
+import com.amazonaws.util.json.JSONObject;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.gson.Gson;
 
@@ -49,17 +51,12 @@ public class Application extends Controller {
   	  String jsonResponse = gson.toJson(BucketSize);
   	  return ok(jsonResponse);
     }
-    
+        
     public static Result getBucketDetails(){
     	printHeaders();
-    	List<BucketDAO> bucketDaoList = new ArrayList<BucketDAO>();
-    	List<BucketDAO> Buckets = s3handler.getBucketList() ;
-    	for( BucketDAO bucket : Buckets){
-    		BucketDAO bucketDao = new BucketDAO(bucket.getName(), bucket.getCreationDate(),bucket.getBucketSize());
-			bucketDaoList.add(bucketDao);
-    	}
+    	List<BucketDAO> buckets = s3handler.getBucketList() ;
     	Gson gson = new Gson();
-    	String jsonResponse = gson.toJson(bucketDaoList);
+    	String jsonResponse = gson.toJson(buckets);
     	return ok(jsonResponse);
     }
     

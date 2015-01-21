@@ -46,6 +46,8 @@ public class S3Handler {
 			double size = getBucketSize(bucket.getName())/1024.00 ;
 			BucketDAO bucketDao = new BucketDAO(bucket.getName(), bucket.getOwner(), bucket.getCreationDate(),
 					size);
+			List<String> keyList = getKeysByBucket(bucket.getName());
+			bucketDao.setKeyList(keyList);
 			bucketDaoList.add(bucketDao);
 		}
 		return bucketDaoList;	
@@ -58,5 +60,14 @@ public class S3Handler {
         	bucketSize += objectSummary.getSize();
         }        
         return bucketSize;
+	}
+	
+	public List<String> getKeysByBucket(String bucketName){
+		ObjectListing objectList = s3.listObjects(new ListObjectsRequest().withBucketName(bucketName));
+		List<String> keyList = new ArrayList<String>();
+		for (S3ObjectSummary objectSummary : objectList.getObjectSummaries()) {
+        	keyList.add(objectSummary.getKey());
+        } 
+	    return keyList;
 	}
 }

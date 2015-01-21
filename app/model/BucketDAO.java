@@ -1,6 +1,7 @@
 package model;
 
 import java.util.Date;
+import java.util.List;
 
 import com.amazonaws.services.s3.model.Owner;
 
@@ -17,7 +18,18 @@ public class BucketDAO{
     /** The date this bucket was created */
     private Date creationDate = null;
     
-    public BucketDAO(String name, Owner owner, Date creationDate, double bucketSize){
+    /** List contains all the photo names in the bucket */
+    private List<String> keyList = null;
+    
+    public List<String> getKeyList() {
+		return keyList;
+	}
+
+	public void setKeyList(List<String> keyList) {
+		this.keyList = keyList;
+	}
+
+	public BucketDAO(String name, Owner owner, Date creationDate, double bucketSize){
     	this.name =  name;
     	this.owner = owner;
     	this.creationDate = creationDate;
