@@ -3,8 +3,7 @@
 from boto.s3.connection import S3Connection
 import ConfigParser,json
 
-#conn = S3Connection("AKIAJHA24Y27ZR443WSA","XIEk9GOoXcq9CZvb4Vj1aHSmtAPyGrSMKDc7zZsE")
-conn = S3Connection("AKIAIRYQCUTPHAUK6QOA", "BNg14WjSheOhU57OEnBUgVK6RYfjR86ppxBvsViz")
+conn = S3Connection("<aws_access_key>,<aws_secret_key>")
 buckets = conn.get_all_buckets()
 config = ConfigParser.ConfigParser()
 config.read('/var/www/cgi/cloud/regions.cfg')
