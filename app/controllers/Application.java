@@ -1,29 +1,15 @@
 package controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.StringTokenizer;
-
 import model.BucketDAO;
-
-import com.amazonaws.services.s3.model.Bucket;
-import com.amazonaws.services.s3.model.ObjectListing;
-import com.amazonaws.util.json.JSONObject;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.google.gson.Gson;
-
-import play.*;
 import play.mvc.*;
 import views.html.*;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
 
-import com.amazonaws.AmazonClientException;
-import com.amazonaws.AmazonServiceException;
   
 public class Application extends Controller {
 	
@@ -33,16 +19,6 @@ public class Application extends Controller {
     public static Result index() {
         return ok(index.render("Your new application is ready."));
     }
-
-    
-    public static Result listBuckets(){
-      printHeaders();
-  	  List<BucketDAO> Buckets = s3handler.getBucketList() ;
-  	  Gson gson = new Gson();
-  	  String jsonResponse = gson.toJson(Buckets);
-  	  return ok(jsonResponse);
-    }
-    
     
     public static Result bucketSize(String bucketName){
       printHeaders();

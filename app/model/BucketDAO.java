@@ -21,7 +21,18 @@ public class BucketDAO{
     /** List contains all the photo names in the bucket */
     private List<String> keyList = null;
     
-    public List<String> getKeyList() {
+    /** Charges for the bucket */
+    private double cost = 0;
+    
+    public double getCost() {
+		return cost;
+	}
+
+	public void setCost(double cost) {
+		this.cost = cost;
+	}
+
+	public List<String> getKeyList() {
 		return keyList;
 	}
 

@@ -44,13 +44,19 @@ public class S3Handler {
 		List<BucketDAO> bucketDaoList = new ArrayList<BucketDAO>();
 		for(Bucket bucket: bucketList){
 			double size = getBucketSize(bucket.getName())/1024.00 ;
-			BucketDAO bucketDao = new BucketDAO(bucket.getName(), bucket.getOwner(), bucket.getCreationDate(),
+			BucketDAO bucketDao = new BucketDAO(bucket.getName(), bucket.getCreationDate(),
 					size);
 			List<String> keyList = getKeysByBucket(bucket.getName());
 			bucketDao.setKeyList(keyList);
+			bucketDao.setCost(getCost(size));
 			bucketDaoList.add(bucketDao);
 		}
 		return bucketDaoList;	
+	}
+	
+	public double getCost(double size){
+		double cost = size*0.10; // each MB costs $0.10
+		return cost;		
 	}
 	
 	public long getBucketSize(String bucketName){

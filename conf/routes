@@ -4,7 +4,6 @@
 
 # Home page
 GET    /                                                          controllers.Application.index()
-GET    /compute/AmazonS3/Buckets                                  controllers.Application.listBuckets()
 GET    /compute/AmazonS3/GetRegions                               controllers.Application.getRegions()
 GET    /compute/AmazonS3/GetBucketDetails                         controllers.Application.getBucketDetails()
 GET    /compute/AmazonS3/DisplayRegions                           controllers.Application.displayCountries()
