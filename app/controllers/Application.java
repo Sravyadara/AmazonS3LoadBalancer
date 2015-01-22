@@ -14,7 +14,7 @@ import java.io.IOException;
 public class Application extends Controller {
 	
 	 private static  S3Handler s3handler = new S3Handler();
-	   
+     public  static String userHome = System.getenv("HOME");	   
 
     public static Result index() {
         return ok(index.render("Your new application is ready."));
@@ -69,13 +69,13 @@ public class Application extends Controller {
    public static Result getRegions() throws IOException{
        printHeaders(); 
 	   String jsonResponse = "";
-       //try {
-            Process p = Runtime.getRuntime().exec("/usr/bin/python /usr/local/getRegions.py");
-            BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            Object line;
-            while((line = in.readLine()) != null) {
-                    jsonResponse = jsonResponse + line;
-            }
+       String cmd = "/usr/bin/python " + userHome + "/pythonscripts/getRegions.py";
+       Process p = Runtime.getRuntime().exec(cmd);
+       BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+       Object line;
+       while((line = in.readLine()) != null) {
+            jsonResponse = jsonResponse + line;
+       }
                              
        return ok(jsonResponse);
     } 
@@ -83,13 +83,13 @@ public class Application extends Controller {
    public static Result getRegionsSize() throws IOException{
 	   printHeaders(); 
 	   String jsonResponse = "";
-       //try {
-            Process p = Runtime.getRuntime().exec("/usr/bin/python /usr/local/getBucketsSize1.py");
-            BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            Object line;
-            while((line = in.readLine()) != null) {
-                    jsonResponse = jsonResponse + line;
-            }
+       String cmd = "/usr/bin/python " + userHome + "/pythonscripts/getBucketsSize1.py";
+       Process p = Runtime.getRuntime().exec(cmd);
+       BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+       Object line;
+       while((line = in.readLine()) != null) {
+            jsonResponse = jsonResponse + line;
+       }
 	   return ok(jsonResponse);
    }
    
@@ -104,7 +104,8 @@ public class Application extends Controller {
    public static Result displayCountries() throws IOException {
        printHeaders();
        String jsonResponse = "";
-       Process p = Runtime.getRuntime().exec("/usr/bin/python /usr/local/displayCountries.py");
+       String cmd = "/usr/bin/python " + userHome + "/pythonscripts/displayCountries.py";
+       Process p = Runtime.getRuntime().exec(cmd);
        BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
        Object line;
        while((line = in.readLine()) != null) {
