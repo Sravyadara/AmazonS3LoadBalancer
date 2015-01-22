@@ -22,7 +22,7 @@
         
          JSONTest = function() {
             var reqNum = document.getElementById('location').value; 
-		    alert(reqNum);  
+		    //alert(reqNum);  
 		    var arr =  $("input[name='check']:checked").map(function(){
                     return this.value;
                    }).get()
@@ -34,6 +34,7 @@
                 type: 'POST',
                 data: {"username": data},
                 success: function (result) {
+                alert("Successfully uploaded files. Please check dashboard");
                 /*alert("In success");
                 switch (result) {
                     case true:
@@ -44,7 +45,7 @@
                 }*/
              },
              error: function (xhr, ajaxOptions, thrownError) {
-             alert("Successfully uploaded files. Please check dashboard");
+             //alert("Successfully uploaded files. Please check dashboard");
              //alert(xhr.status);
              //alert(thrownError);
              }

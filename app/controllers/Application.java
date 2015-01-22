@@ -70,7 +70,7 @@ public class Application extends Controller {
        printHeaders(); 
 	   String jsonResponse = "";
        //try {
-            Process p = Runtime.getRuntime().exec("/usr/bin/python ~/pythonscripts/getRegions.py");
+            Process p = Runtime.getRuntime().exec("/usr/bin/python /usr/local/getRegions.py");
             BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
             Object line;
             while((line = in.readLine()) != null) {
@@ -84,7 +84,7 @@ public class Application extends Controller {
 	   printHeaders(); 
 	   String jsonResponse = "";
        //try {
-            Process p = Runtime.getRuntime().exec("/usr/bin/python ~/pythonscripts/getBucketsSize1.py");
+            Process p = Runtime.getRuntime().exec("/usr/bin/python /usr/local/getBucketsSize1.py");
             BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
             Object line;
             while((line = in.readLine()) != null) {
@@ -104,7 +104,7 @@ public class Application extends Controller {
    public static Result displayCountries() throws IOException {
        printHeaders();
        String jsonResponse = "";
-       Process p = Runtime.getRuntime().exec("/usr/bin/python ~/pythonscripts/displayCountries.py");
+       Process p = Runtime.getRuntime().exec("/usr/bin/python /usr/local/displayCountries.py");
        BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
        Object line;
        while((line = in.readLine()) != null) {
