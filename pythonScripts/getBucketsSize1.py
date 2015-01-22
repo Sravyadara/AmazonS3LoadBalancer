@@ -5,7 +5,7 @@ from boto.s3.key import Key
 import json
 import ConfigParser
 
-conn = S3Connection("<aws_access_key>", "<aws_secret_key>")
+conn = S3Connection()
 allBuckets = conn.get_all_buckets()
 config = ConfigParser.ConfigParser()
 config.read('/usr/local/regions.cfg')
@@ -16,15 +16,11 @@ for bucket in allBuckets:
     allKeys = bucket.get_all_keys()
     size = 0
     bucketDetails[bucket.name] = {}
-    #print "%s\t%s" %(bucket.name,bucket.get_location())
-    #bucketDetails[bucket.name]["category"] = bucket.name   
     for key in allKeys:
         size = size + key.size
-        #bucketDetails[bucket.name]['percentage'] = size /1000
     bucketDetails[bucket.name]['size'] = size
     bucketDetails[bucket.name]['region'] = config.get('regions', bucket.get_location())
 
-#print json.dumps(bucketDetails)
 
 regionsDict = {}
 
@@ -36,7 +32,6 @@ for key in bucketDetails.keys():
 
     regionsDict[bucketDetails[key]['region']].append(key)
 
-#print regionsDict
 barDict = {}
 
 for key in regionsDict:

@@ -27,7 +27,7 @@ public class S3Handler {
 	            throw new AmazonClientException(
 	                    "Cannot load the credentials from the credential profiles file. " +
 	                    "Please make sure that your credentials file is at the correct " +
-	                    "location (/Users/sravyadara/.aws/credentials), and is in valid format.",
+	                    "location (~/.aws/credentials), and is in valid format.",
 	                    e);
 	        }
 			

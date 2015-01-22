@@ -32,19 +32,21 @@
                 url: url,
                 type: 'POST',
                 data: {"username": data},
+                async: false,
                 success: function (result) {
-                alert("In success");
+                /*alert("In success");
                 switch (result) {
                     case true:
                           processResponse(result);
                           break;
                     default:
                           resultDiv.html(result);
-                }
+                }*/
              },
              error: function (xhr, ajaxOptions, thrownError) {
-             alert(xhr.status);
-             alert(thrownError);
+             alert("Successfully uploaded files. Please check dashboard");
+             //alert(xhr.status);
+             //alert(thrownError);
              }
            });
           };
@@ -93,7 +95,7 @@
         <header class="header">
             <a href="../../index.html" class="logo">
                 <!-- Add the class icon to your logo image or logo icon to add the margining -->
-                AdminLTE
+                Load Balancer 
             </a>
             <!-- Header Navbar: style can be found in header.less -->
             <nav class="navbar navbar-static-top" role="navigation">
@@ -151,7 +153,7 @@
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                               Multiple User Request Form
+                              Request Generator
                         
                     </h1>
                    
@@ -175,30 +177,30 @@
                                            <label>Select the Images</label>
                                            <div class="checkbox">
                                                 <label>
-                                                    <input type="checkbox" name="check" value = "Checkbox 1"/>
-                                                    Checkbox 1
+                                                    <input type="checkbox" name="check" value = "Image 1"/>
+                                                    Image1.jpg
                                                 </label>
                                             <div class="checkbox">
                                                 <label>
-                                                    <input type="checkbox" name="check" value = "Checkbox 2"/>
-                                                    Checkbox 2
-                                                </label>
-                                            </div>
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input type="checkbox" name="check" value = "Checkbox 3"/>
-                                                     Checkbox 3
+                                                    <input type="checkbox" name="check" value = "Image 2"/>
+                                                    Image2.jpg
                                                 </label>
                                             </div>
                                             <div class="checkbox">
                                                 <label>
-                                                    <input type="checkbox" name="check" value = "Checkbox 4"/>
-                                                    Checkbox 4
+                                                    <input type="checkbox" name="check" value = "Image 3"/>
+                                                     Image3.jpg
+                                                </label>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" name="check" value = "Image 4"/>
+                                                    Image4.jpg
                                                 </label>
                                                 <div class="checkbox">
                                                 <label>
-                                                    <input type="checkbox" name="check" value = "Checkbox 5"/>
-                                                    Checkbox 5
+                                                    <input type="checkbox" name="check" value = "Image 5"/>
+                                                    Image5.jpg
                                                 </label>
                                        
                                     </div><!-- /.box-body -->

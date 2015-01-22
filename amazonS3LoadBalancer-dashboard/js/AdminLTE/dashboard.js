@@ -47,10 +47,10 @@ $(function() {
         }, */
     markers: countries.map(function(h){ 
                             if(h.status == "old") { 
-                                return {name: h.name, latLng: h.coords, style: {fill: 'red'}} 
+                                return {name: h.name, latLng: h.coords, style: {fill: '#FABF00'}} 
                             }
                             else {
-                                return {name: h.name, latLng: h.coords, style: {fill: 'yellow'}}
+                                return {name: h.name, latLng: h.coords, style: {fill: 'red'}}
                             }
                         }),
     labels: {

@@ -3,7 +3,7 @@
 from boto.s3.connection import S3Connection
 import ConfigParser,json
 
-conn = S3Connection("<aws_access_key>,<aws_secret_key>")
+conn = S3Connection()
 buckets = conn.get_all_buckets()
 config = ConfigParser.ConfigParser()
 config.read('/usr/local/regions.cfg')
@@ -11,9 +11,7 @@ bucketsDict = {}
 
 for b in buckets:
     bucketsDict[b.name] = config.get('regions', b.get_location())
-    #bucketsDict[b.name]['region'] = config.get('regions', b.get_location())
 
-#print bucketsDict
 regionsDict = {}
 
 for key in bucketsDict.keys():
@@ -24,7 +22,6 @@ for key in bucketsDict.keys():
 
     regionsDict[bucketsDict[key]].append(key)
 
-#print regionsDict
 donutDict = {}
 
 for key in regionsDict:
@@ -33,8 +30,3 @@ for key in regionsDict:
     donutDict[key]['value'] = len(regionsDict[key])
 
 print json.dumps(donutDict)
-
-
-#print buckets[0].get_all_keys()[0].size
-#print buckets[0].get_all_keys()[0].name
-

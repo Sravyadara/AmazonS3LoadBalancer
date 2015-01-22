@@ -121,10 +121,10 @@ public class s3modify {
             throw new AmazonClientException(
                     "Cannot load the credentials from the credential profiles file. " +
                     "Please make sure that your credentials file is at the correct " +
-                    "location (/home/sravya/.aws/credentials), and is in valid format.",
+                    "location (~/.aws/credentials), and is in valid format.",
                     e);
         }
-
+     System.out.println("Here");;
        int argLen = args.length;
        //for (int mm = 0; mm < argLen; mm++)
        //{
@@ -141,18 +141,67 @@ public class s3modify {
 //         tx = new TransferManager(s3n);
 //         System.out.println("List of IDCs");
 //         List<Bucket> buckets = s3n.listBuckets();
-        //int userrequests = Integer.parseInt(args[argLen-1]);
-    	 int userrequests =10;
-       /* int filecount=0;
+    	 int hack = 0;
+    	 int userrequests ;
+    	 
+    	 try{ 
+    		 userrequests = Integer.parseInt(args[argLen-1]);
+    	 }
+    	 catch (NumberFormatException e)
+    	 {
+    		 userrequests = 1;
+    		 String use =  args[argLen-1];
+    		 if(use.equals("Australia"))
+    		 {
+    			 hack = 0;
+    		 }
+    		 else if(use.equals("SouthAfrica") )
+    		 {
+    			 hack = 1;
+    		 }
+    		 else if(use.equals("India"))
+    		 {
+    			 hack = 2;
+    		 }
+    		 else if(use.equals("UnitedKingdom"))
+    		 {
+    			 hack = 3;
+    		 }
+    		 else if(use.equals("China"))
+    		 {
+    			 hack = 4;
+    		 }
+    		 else if(use.equals("Germany"))
+    		 {
+    			 hack = 5;
+    		 }
+    		 else if(use.equals("France"))
+    		 {
+    			 hack = 6;
+    		 }
+    		 else if(use.equals("Japan"))
+    		 {
+    			 hack = 7;
+    		 }
+    		 else if(use.equals("Thailand"))
+    		 {
+    			 hack = 8;
+    		 }
+    		 else if(use.equals("Spain"))
+    		 {
+    			 hack = 9;
+    		 }
+    	 }
+    	System.out.println("After number check");; 
+       int filecount=0;
         for(int m = 0; m < argLen-1;m++)
         {
         	filecount= filecount+1;
         }
-        System.out.println("filecount:"+filecount);
+        
         int numphotos = filecount;
-        int numIDCs= numphotos;*/
-    	 int numphotos = 3;
-         int numIDCs= numphotos;
+        int numIDCs= numphotos;
+    	
         int locationInd= 0;
         long[] cusize= new long[6];
         long photosspace=0;
@@ -192,16 +241,15 @@ public class s3modify {
         	   
            }
            
-           //avgload= 88.75;
-           //diffload= 147;
-           System.out.println("Count: "+ count);
+           
+           //System.out.println("Count: "+ count);
            avgload= (avgload / count);
            diffload= (regionload[i]/avgload) ;
-           diffload= Math.ceil(diffload);
+           //diffload= Math.ceil(diffload);
            
            System.out.println("avgload: "+ avgload);
            System.out.println("diffload: "+ diffload);
-           if(diffload<=1)
+           if(diffload < 1.8)
            {
         	   //originalgarph[g]=i+1;
         	   
@@ -272,13 +320,9 @@ public class s3modify {
 						 {
 							 cusize[5]=availSpaceSydney/6000;
 						 }
-		 System.out.println(" norcal size "+ cusize[1]);
-		 System.out.println(" norcal size "+ cusize[2]);
-		 System.out.println(" norcal size "+ cusize[3]);
-		 System.out.println(" norcal size "+ cusize[4]);
-		 System.out.println(" norcal size "+ cusize[5]);
+		 
      // Get size and display.
-		 int cou1 = originalgarph.size();
+		 /*int cou1 = originalgarph.size();
     	
     	System.out.println("graph nodes Count: " + cou1);
 
@@ -286,29 +330,38 @@ public class s3modify {
     	for (int i = 0; i < cou1; i++) {
     	    int value = originalgarph.get(i);
     	    System.out.println("Element: " + value);
-    	}
+    	}*/
 		 int cou = originalgarph.size();
-    	PrintWriter writer = new PrintWriter("/home/sravya/location/request.alg", "UTF-8");
+    	PrintWriter writer = new PrintWriter("/tmp/location/request.alg", "UTF-8");
     	for (int i = 0; i < cou; i++) {
     	    int value = originalgarph.get(i);
     	    writer.print(value+" ");
+    	    System.out.println(" IDC " + String.valueOf(value) );
     	}
         writer.println();
         for (int i = 0; i < originalgarph.size(); i++) {
         	int j= originalgarph.get(i);
     	  
     	    writer.print(cusize[j]+" ");
+    	    //System.out.println(" csusize " + String.valueOf(cusize[j]) );
     	}
         writer.println();
         writer.println(1);
         if(userrequests != 1)
         {
         	locationInd = randInt(0,9);
-        	numphotos = 3;
+        	//numphotos = 3;
+        }
+        else
+        {
+        	locationInd = hack;
         }
         	 writer.println(locationInd);
+        	 System.out.println(" locationInd " + String.valueOf(locationInd) );
              writer.println(numphotos);	
+             System.out.println(" numphotos " + String.valueOf(numphotos) );
          	 writer.println(numIDCs);
+         	 System.out.println(" numIDCs " + String.valueOf(numIDCs) );
         
        
         writer.close();
@@ -331,18 +384,18 @@ public class s3modify {
         try{
             
             String prg = "import sys\nprint int(sys.argv[1])+int(sys.argv[2])\n";
-           
-            Process p = Runtime.getRuntime().exec("python /home/sravya/location/ramd.py ");
+            
+            Process p = Runtime.getRuntime().exec("python /tmp/location/ramd.py ");
             try {
-                Thread.sleep(1000);                 //1000 milliseconds is one second.
+                Thread.sleep(2000);                 //1000 milliseconds is one second.
             } catch(InterruptedException ex) {
                 Thread.currentThread().interrupt();
             }
            
-            File log = new File("/home/sravya/location/work.alg");
+            File log = new File("/tmp/location/work.alg");
            
             int filenumber=0;
-            Scanner numberscan = new Scanner(new File("/home/sravya/location/filenumber.alg"));
+            Scanner numberscan = new Scanner(new File("/tmp/location/filenumber.alg"));
             if(numberscan.hasNextLine())
             {
             	filenumber = numberscan.nextInt();
@@ -358,8 +411,8 @@ public class s3modify {
             ArrayList<String> photofnames = new ArrayList<String>();
             for(int ll = 0; ll < argLen-1;ll++)
             {
-            	photofnames.add("/home/sravya/Downloads/photos/file" + args[ll] + ".jpg");
-            	System.out.println("Will upload " + "/home/sravya/Downloads/photos/file" + args[ll] + ".jpg");
+            	photofnames.add("/tmp/photos/file" + args[ll] + ".jpg");
+            	System.out.println("Will upload " + "/tmp/photos/file" + args[ll] + ".jpg");
             }
 //            photofnames.add("/home/sravya/Downloads/photos/file1.jpg");
 //            photofnames.add("/home/sravya/Downloads/photos/file2.jpg");
@@ -368,12 +421,13 @@ public class s3modify {
 //            photofnames.add("/home/sravya/Downloads/photos/file5.jpg");
             String sCurrentLine;
             BufferedReader br = null;
-			br = new BufferedReader(new FileReader("/home/sravya/location/work.alg"));
+			br = new BufferedReader(new FileReader("/tmp/location/work.alg"));
 			int currLine = 0;
 			Integer userNumber=0;
 			ArrayList<Integer> idcSet = new ArrayList<Integer>();
 			ArrayList<Integer> photonos = new ArrayList<Integer>();
 			int currU = 0;
+			
 			while ((sCurrentLine = br.readLine()) != null) {
 				
 				if(currLine %3 == 0)
@@ -385,10 +439,47 @@ public class s3modify {
 				if(currLine %3 == 1)
 				{
 					String[] idcnums = sCurrentLine.split(" ");
+					String regions="";
+					PrintWriter regionwriter = new PrintWriter("/tmp/location/regions.alg", "UTF-8");
 					for(int numIdcs = 0; numIdcs < idcnums.length;numIdcs++)
 					{
 						idcSet.add(Integer.parseInt( idcnums[numIdcs]));
+						
+				    	
+						
+						if(idcnums[numIdcs].equals("1"))
+						{  //System.out.println("IDCs   1 : "+ idcnums[numIdcs]);
+							regions="region1";
+							regionwriter.print(regions+" ");	
+						}
+						else if(idcnums[numIdcs].equals("2"))
+						{  // System.out.println("IDCs   2 : "+ idcnums[numIdcs]);
+							regions="region2";
+							regionwriter.print(regions+" ");
+							
+						}
+						else if(idcnums[numIdcs].equals("3"))
+						{  // System.out.println("IDCs   3 : "+ idcnums[numIdcs]);
+							regions="region3";
+						    regionwriter.print(regions+" ");
+							
+						}
+						else if(idcnums[numIdcs].equals("4"))
+						{  // System.out.println("IDCs   4 : "+ idcnums[numIdcs]);
+							regions="region4";
+					        regionwriter.print(regions+" ");
+							
+						}
+						else if(idcnums[numIdcs].equals("5"))
+						{
+							//System.out.println("IDCs   5 : "+ idcnums[numIdcs]);
+							regions="region5";
+						    regionwriter.print(regions+" ");
+						}
+						
+						System.out.println("IDCs: "+ idcnums[numIdcs]);
 					}
+					regionwriter.close();
 				}
 				if(currLine %3 == 2)
 				{
@@ -396,6 +487,7 @@ public class s3modify {
 					for(int numIdcs = 0; numIdcs < idcpnums.length;numIdcs++)
 					{
 						photonos.add(Integer.parseInt( idcpnums[numIdcs]));
+						
 					}
 					ArrayList<String> smallestBnames = new ArrayList<String>();
 					ArrayList<String> bucketnames = new ArrayList<String>();
@@ -467,7 +559,7 @@ public class s3modify {
 				
 				
 			}
-			 PrintWriter numberwriter = new PrintWriter("/home/sravya/location/filenumber.alg", "UTF-8");
+			 PrintWriter numberwriter = new PrintWriter("/tmp/location/filenumber.alg", "UTF-8");
           numberwriter.println(filenumber);
           numberwriter.close();
             
@@ -493,7 +585,7 @@ public class s3modify {
    
 
     public s3modify() throws Exception {
-        frame = new JFrame("Amazon S3 File Upload");
+        /*frame = new JFrame("Amazon S3 File Upload");
         button = new JButton("Choose File...");
         button.addActionListener(new ButtonListener());
 
@@ -503,7 +595,7 @@ public class s3modify {
         frame.setContentPane(createContentPane());
         frame.pack();
         frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);*/
     }
 
     class ButtonListener implements ActionListener {
@@ -699,27 +791,7 @@ private static long calculateregionload(String regionname){
                              
                          } while (objectListing.isTruncated());
                          
-                 
-        /* long[] regionload = new long[5];
-         regionload[0] = NorthCalRegLoad;
-         regionload[1] = OregonRegLoad;
-         regionload[2] = SingaporeRegLoad;
-         regionload[3] = SydneyRegLoad;
-         regionload[4] = TokyoRegLoad;
-         regionload[5] = NorthCalRegLoad;
-         regionload[6] = OregonRegLoad;
-         regionload[7] = SingaporeRegLoad;
-         regionload[8] = SydneyRegLoad;
-         regionload[9] = TokyoRegLoad;
-         regionload[10] = NorthCalRegLoad;
-         regionload[11] = OregonRegLoad;
-         */
-         
-
-        
-         
-        
-        
+                  
          
     	
     	return size;

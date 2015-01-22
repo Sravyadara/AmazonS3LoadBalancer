@@ -34,26 +34,24 @@
                 type: 'POST',
                 data: {"username": data},
                 success: function (result) {
-                alert("In success");
+                /*alert("In success");
                 switch (result) {
                     case true:
                           processResponse(result);
                           break;
                     default:
                           resultDiv.html(result);
-                }
+                }*/
              },
              error: function (xhr, ajaxOptions, thrownError) {
-             alert(xhr.status);
-             alert(thrownError);
+             alert("Successfully uploaded files. Please check dashboard");
+             //alert(xhr.status);
+             //alert(thrownError);
              }
            });
           };
                   
-        updateContent();    	      
 	      
-	      }
-        
         </script> 
     </head>
     <body class="skin-blue">
@@ -136,16 +134,16 @@
                                             <label>Select the User Location</label>
                                             <select class="form-control" id="location">
                                                 <option>Select the location</option>
-                                                <option value ="option 1">option 1</option>
-                                                <option value ="option 2">option 2</option>
-                                                <option value ="option 3">option 3</option>
-                                                <option value ="option 4">option 4</option>
-                                                <option value ="option 5">option 5</option>
-                                                <option value ="option 6">option 6</option>
-                                                <option value ="option 7">option 7</option>
-                                                <option value ="option 8">option 8</option>
-                                                <option value ="option 9">option 9</option>
-                                                <option value ="option 10">option 10</option>
+                                                <option value ="Australia" >Australia </option>
+                                                <option value ="SouthAfrica">SouthAfrica</option>
+                                                <option value ="India">India</option>
+                                                <option value ="UnitedKingdom">UnitedKingdom</option>
+                                                <option value ="China">China</option>
+                                                <option value ="Germany">Germany</option>
+                                                <option value ="France">France</option>
+                                                <option value ="Japan">Japan</option>
+                                                <option value ="Thailand">Thailand</option>
+                                                <option value ="Spain">Spain</option>
                                             </select>
                                         </div>
                                 <!-- form start -->
@@ -154,30 +152,30 @@
                                            <label>Select the Images</label>
                                            <div class="checkbox">
                                                 <label>
-                                                    <input type="checkbox" name="check" value = "Checkbox 1"/>
-                                                    Checkbox 1
+                                                    <input type="checkbox" name="check" value = "Image 1"/>
+                                                    Image1.jpg
                                                 </label>
                                             <div class="checkbox">
                                                 <label>
-                                                    <input type="checkbox" name="check" value = "Checkbox 2"/>
-                                                    Checkbox 2
-                                                </label>
-                                            </div>
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input type="checkbox" name="check" value = "Checkbox 3"/>
-                                                     Checkbox 3
+                                                    <input type="checkbox" name="check" value = "Image 2"/>
+                                                    Image2.jpg
                                                 </label>
                                             </div>
                                             <div class="checkbox">
                                                 <label>
-                                                    <input type="checkbox" name="check" value = "Checkbox 4"/>
-                                                    Checkbox 4
+                                                    <input type="checkbox" name="check" value = "Image 3"/>
+                                                     Image3.jpg
+                                                </label>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" name="check" value = "Image 4"/>
+                                                    Image4.jpg
                                                 </label>
                                                 <div class="checkbox">
                                                 <label>
-                                                    <input type="checkbox" name="check" value = "Checkbox 5"/>
-                                                    Checkbox 5
+                                                    <input type="checkbox" name="check" value = "Image 5"/>
+                                                    Image5.jpg
                                                 </label>
                                        
                                     </div><!-- /.box-body -->
