@@ -33,8 +33,9 @@
                 url: url,
                 type: 'POST',
                 data: {"username": data},
+                async: false,
                 success: function (result) {
-                alert("Successfully uploaded files. Please check dashboard");
+                //alert("Successfully uploaded files. Please check dashboard");
                 /*alert("In success");
                 switch (result) {
                     case true:
@@ -45,12 +46,12 @@
                 }*/
              },
              error: function (xhr, ajaxOptions, thrownError) {
-             //alert("Successfully uploaded files. Please check dashboard");
+             alert("Successfully uploaded files. Please check dashboard");
              //alert(xhr.status);
              //alert(thrownError);
              }
            });
-          };
+          }
                   
 	      
         </script> 
@@ -153,30 +154,30 @@
                                            <label>Select the Images</label>
                                            <div class="checkbox">
                                                 <label>
-                                                    <input type="checkbox" name="check" value = "Image 1"/>
-                                                    Image1.jpg
+                                                    <input type="checkbox" name="check" value = "blue"/>
+                                                    Blue.bmp
                                                 </label>
                                             <div class="checkbox">
                                                 <label>
-                                                    <input type="checkbox" name="check" value = "Image 2"/>
-                                                    Image2.jpg
-                                                </label>
-                                            </div>
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input type="checkbox" name="check" value = "Image 3"/>
-                                                     Image3.jpg
+                                                    <input type="checkbox" name="check" value = "red"/>
+                                                    Red.bmp
                                                 </label>
                                             </div>
                                             <div class="checkbox">
                                                 <label>
-                                                    <input type="checkbox" name="check" value = "Image 4"/>
-                                                    Image4.jpg
+                                                    <input type="checkbox" name="check" value = "purple"/>
+                                                    Purple.bmp
+                                                </label>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" name="check" value = "violet"/>
+                                                    Violet.bmp
                                                 </label>
                                                 <div class="checkbox">
                                                 <label>
-                                                    <input type="checkbox" name="check" value = "Image 5"/>
-                                                    Image5.jpg
+                                                    <input type="checkbox" name="check" value = "yellow"/>
+                                                    Yellow.bmp
                                                 </label>
                                        
                                     </div><!-- /.box-body -->

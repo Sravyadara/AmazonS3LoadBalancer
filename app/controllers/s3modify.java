@@ -87,6 +87,9 @@ public class s3modify {
     private static AWSCredentials credentials = null;
     private static TransferManager tx;
     private static String bucketName;
+    public static String userHome = System.getenv("HOME");
+    public static String algorithmPath = userHome + "/location/";
+    public static String photosPath = userHome + "/photos/";
 
     private JProgressBar pb;
     private JFrame frame;
@@ -98,11 +101,7 @@ public class s3modify {
     private static long availSpaceTokyo = 0;
     private static long availSpaceSydney = 0;
     
-    private static long OregonRegLoad = 0;
-    private static long NorthCalRegLoad = 0;
-    private static long SingaporeRegLoad = 0;
-    private static long TokyoRegLoad = 0;
-    private static long SydneyRegLoad = 0;
+    
     private static long maxsize = 1000000000;
    
 
@@ -121,26 +120,13 @@ public class s3modify {
             throw new AmazonClientException(
                     "Cannot load the credentials from the credential profiles file. " +
                     "Please make sure that your credentials file is at the correct " +
-                    "location (~/.aws/credentials), and is in valid format.",
+                    "location (/home/sravya/.aws/credentials), and is in valid format.",
                     e);
         }
-     System.out.println("Here");;
-       int argLen = args.length;
-       //for (int mm = 0; mm < argLen; mm++)
-       //{
-    	//   System.out.println(args[mm]);
-       //}
-        //AmazonS3 s3 = new AmazonS3Client(credentials);
-        //AmazonS3 s3n = new AmazonS3Client(credentials);
-    	//s3.setEndpoint("https://s3-us-west-2.amazonaws.com");
-    	
-
-    	 Region reg = Region.getRegion(Regions.US_WEST_2);
-         
-//         s3n.setRegion(reg);
-//         tx = new TransferManager(s3n);
-//         System.out.println("List of IDCs");
-//         List<Bucket> buckets = s3n.listBuckets();
+        
+        int argLen = args.length;
+        Region reg = Region.getRegion(Regions.US_WEST_2);
+      
     	 int hack = 0;
     	 int userrequests ;
     	 
@@ -192,7 +178,7 @@ public class s3modify {
     			 hack = 9;
     		 }
     	 }
-    	System.out.println("After number check");; 
+    	
        int filecount=0;
         for(int m = 0; m < argLen-1;m++)
         {
@@ -241,22 +227,16 @@ public class s3modify {
         	   
            }
            
-           
-           //System.out.println("Count: "+ count);
+          
            avgload= (avgload / count);
            diffload= (regionload[i]/avgload) ;
-           //diffload= Math.ceil(diffload);
-           
            System.out.println("avgload: "+ avgload);
            System.out.println("diffload: "+ diffload);
            if(diffload < 1.8)
            {
-        	   //originalgarph[g]=i+1;
         	   
         	   originalgarph.add(i+1);
-        	   
-        	   
-           }
+          }
         	
         }
                 
@@ -321,18 +301,12 @@ public class s3modify {
 							 cusize[5]=availSpaceSydney/6000;
 						 }
 		 
-     // Get size and display.
-		 /*int cou1 = originalgarph.size();
-    	
-    	System.out.println("graph nodes Count: " + cou1);
-
-    	// Loop through elements.
-    	for (int i = 0; i < cou1; i++) {
-    	    int value = originalgarph.get(i);
-    	    System.out.println("Element: " + value);
-    	}*/
+     
 		 int cou = originalgarph.size();
-    	PrintWriter writer = new PrintWriter("/tmp/location/request.alg", "UTF-8");
+            String fileName = algorithmPath + "request.alg";
+        PrintWriter writer = new PrintWriter(fileName, "UTF-8");
+
+    	
     	for (int i = 0; i < cou; i++) {
     	    int value = originalgarph.get(i);
     	    writer.print(value+" ");
@@ -343,14 +317,14 @@ public class s3modify {
         	int j= originalgarph.get(i);
     	  
     	    writer.print(cusize[j]+" ");
-    	    //System.out.println(" csusize " + String.valueOf(cusize[j]) );
+    	    
     	}
         writer.println();
         writer.println(1);
         if(userrequests != 1)
         {
         	locationInd = randInt(0,9);
-        	//numphotos = 3;
+        	
         }
         else
         {
@@ -362,40 +336,29 @@ public class s3modify {
              System.out.println(" numphotos " + String.valueOf(numphotos) );
          	 writer.println(numIDCs);
          	 System.out.println(" numIDCs " + String.valueOf(numIDCs) );
-        
-       
-        writer.close();
-        originalgarph.clear();
-        //PrintWriter writer1 = new PrintWriter("/home/sravya/location/distances10-5.alg", "UTF-8");
-    	/*for (int i = 0; i < originalgarph.size(); i++) {
-    	    int value = originalgarph.get(i);
-    	    writer1.print(value+" ");
-    	}
-        writer1.println();
-        for (int i = 0; i < originalgarph.size(); i++) {
-    	  
-    	    writer1.print(numphotos+" ");
-    	}*/
-       
-       // writer1.close();
-        
-     
-        
+             writer.close();
+             originalgarph.clear();
+          
         try{
             
             String prg = "import sys\nprint int(sys.argv[1])+int(sys.argv[2])\n";
-            
-            Process p = Runtime.getRuntime().exec("python /tmp/location/ramd.py ");
+            String pythonCmd = "/usr/bin/python " + algorithmPath + "ramd.py";
+            Process p = Runtime.getRuntime().exec(pythonCmd);
+           
             try {
                 Thread.sleep(2000);                 //1000 milliseconds is one second.
             } catch(InterruptedException ex) {
                 Thread.currentThread().interrupt();
             }
-           
-            File log = new File("/tmp/location/work.alg");
+            String fileName1 = algorithmPath + "work.alg";
+            File log = new File(fileName1);             
+            
            
             int filenumber=0;
-            Scanner numberscan = new Scanner(new File("/tmp/location/filenumber.alg"));
+
+             String fileName2 = algorithmPath + "filenumber.alg";
+            Scanner numberscan = new Scanner(new File(fileName2));
+            
             if(numberscan.hasNextLine())
             {
             	filenumber = numberscan.nextInt();
@@ -409,19 +372,18 @@ public class s3modify {
             numberscan.close();
           
             ArrayList<String> photofnames = new ArrayList<String>();
+            ArrayList<String> argFNames = new ArrayList<String>();
             for(int ll = 0; ll < argLen-1;ll++)
             {
-            	photofnames.add("/tmp/photos/file" + args[ll] + ".jpg");
-            	System.out.println("Will upload " + "/tmp/photos/file" + args[ll] + ".jpg");
+            	
+                photofnames.add(photosPath + args[ll] + ".bmp");
+            	argFNames.add(args[ll]);
+            	System.out.println("Will upload " + photosPath + args[ll] + ".bmp");
             }
-//            photofnames.add("/home/sravya/Downloads/photos/file1.jpg");
-//            photofnames.add("/home/sravya/Downloads/photos/file2.jpg");
-//            photofnames.add("/home/sravya/Downloads/photos/file3.jpg");
-//            photofnames.add("/home/sravya/Downloads/photos/file4.jpg");
-//            photofnames.add("/home/sravya/Downloads/photos/file5.jpg");
+
             String sCurrentLine;
             BufferedReader br = null;
-			br = new BufferedReader(new FileReader("/tmp/location/work.alg"));
+			br = new BufferedReader(new FileReader(fileName1));
 			int currLine = 0;
 			Integer userNumber=0;
 			ArrayList<Integer> idcSet = new ArrayList<Integer>();
@@ -440,7 +402,9 @@ public class s3modify {
 				{
 					String[] idcnums = sCurrentLine.split(" ");
 					String regions="";
-					PrintWriter regionwriter = new PrintWriter("/tmp/location/regions.alg", "UTF-8");
+                                        String regionsFileName = algorithmPath + "regions.alg";
+					PrintWriter regionwriter = new PrintWriter(regionsFileName, "UTF-8");    
+					
 					for(int numIdcs = 0; numIdcs < idcnums.length;numIdcs++)
 					{
 						idcSet.add(Integer.parseInt( idcnums[numIdcs]));
@@ -448,31 +412,31 @@ public class s3modify {
 				    	
 						
 						if(idcnums[numIdcs].equals("1"))
-						{  //System.out.println("IDCs   1 : "+ idcnums[numIdcs]);
+						{  
 							regions="region1";
 							regionwriter.print(regions+" ");	
 						}
 						else if(idcnums[numIdcs].equals("2"))
-						{  // System.out.println("IDCs   2 : "+ idcnums[numIdcs]);
+						{  
 							regions="region2";
 							regionwriter.print(regions+" ");
 							
 						}
 						else if(idcnums[numIdcs].equals("3"))
-						{  // System.out.println("IDCs   3 : "+ idcnums[numIdcs]);
+						{  
 							regions="region3";
 						    regionwriter.print(regions+" ");
 							
 						}
 						else if(idcnums[numIdcs].equals("4"))
-						{  // System.out.println("IDCs   4 : "+ idcnums[numIdcs]);
+						{  
 							regions="region4";
 					        regionwriter.print(regions+" ");
 							
 						}
 						else if(idcnums[numIdcs].equals("5"))
 						{
-							//System.out.println("IDCs   5 : "+ idcnums[numIdcs]);
+							
 							regions="region5";
 						    regionwriter.print(regions+" ");
 						}
@@ -499,20 +463,22 @@ public class s3modify {
 					int currPno = 0;
 					ArrayList<String> transferThese = new ArrayList<String>();
 					ArrayList<Integer> transferThesebno = new ArrayList<Integer>();
+					System.out.println(String.valueOf(idcpnums.length));
 					//upload everything to 1 bucket
 					for(int numIdcs = 0; numIdcs < idcpnums.length;numIdcs++)
-					{
+					{ 
 						for(int numP=0; numP < photonos.get(numIdcs); numP++)
 						{
-							String keyName        = String.valueOf(userNumber)+"file"+filenumber++ +".jpg";
-		                	String uploadFileName = photofnames.get(currPno);
+							String uploadFileName = photofnames.get(currPno);
+							String keyName        = String.valueOf(userNumber) + "_" + argFNames.get(currPno) + '_' +filenumber++ +".bmp";
 		                	if(numIdcs > 0)
 		                	{
 		                		transferThese.add(keyName);
 		                		transferThesebno.add(numIdcs);
+		                		
 		                	}
 		                	try {
-	                            System.out.println("Uploading "+ uploadFileName +" to " + smallestBnames.get(0) +"\n");
+	                            System.out.println("Uploading "+ uploadFileName +" to " + smallestBnames.get(0)+ " with keyname "+ keyName);
 	                            File file = new File(uploadFileName);
 	                            s3client.putObject(new PutObjectRequest(
 	                            		smallestBnames.get(0), keyName, file));
@@ -533,6 +499,7 @@ public class s3modify {
 						}
 					}
 					//transfer other files
+					System.out.println("Number of files to transfer " + String.valueOf(transferThese.size()));
 					for(int tot = 0; tot < transferThese.size(); tot++)
 					{
 						String source = smallestBnames.get(0);
@@ -551,6 +518,7 @@ public class s3modify {
 						transferThese.clear();
 						transferThesebno.clear();
 						photofnames.clear();
+						argFNames.clear();
 						smallestBnames.clear();
 						break;
 					}
@@ -559,7 +527,9 @@ public class s3modify {
 				
 				
 			}
-			 PrintWriter numberwriter = new PrintWriter("/tmp/location/filenumber.alg", "UTF-8");
+                         String fileNumberFilePath = algorithmPath + "filenumber.alg";
+			 PrintWriter numberwriter = new PrintWriter(fileNumberFilePath, "UTF-8");
+			 
           numberwriter.println(filenumber);
           numberwriter.close();
             
@@ -669,9 +639,9 @@ public class s3modify {
        String sq;
        long total = 0;
         while ((sq = stdInput.readLine()) != null) {
-            //System.out.println(sq);
+           
             String[] thisLine = sq.split("  {0,}");
-            //System.out.println(thisLine[2]);
+           
             total = total + Integer.parseInt(thisLine[2]);
         }
         return(total);
@@ -757,36 +727,21 @@ private static long calculateregionload(String regionname){
     	AmazonS3 s3 = new AmazonS3Client(credentials);
     	 long size= 0;
         	 
-                 //bucketName= bucket.getName();
+                 
                      AmazonS3 s3client = new AmazonS3Client(new ProfileCredentialsProvider());
                      //try {
-                     
-                         //System.out.println(bucketName);
-                
-                         ListObjectsRequest listObjectsRequest = new ListObjectsRequest()
+                      ListObjectsRequest listObjectsRequest = new ListObjectsRequest()
                              .withBucketName(regionname);
                              
                          ObjectListing objectListing;            
                          do {
                              objectListing = s3client.listObjects(listObjectsRequest);
                              
-                            
-                           
-                             
-                            
-                             		 for (S3ObjectSummary objectSummary : 
+                          		 for (S3ObjectSummary objectSummary : 
                                       	objectListing.getObjectSummaries()) {
                              			size= objectSummary.getSize();
-                             			
-                             		 
-                             		
-                             		 
-                             	 }
-                             	 
-                             	 
-                             
-                             
-                             listObjectsRequest.setMarker(objectListing.getNextMarker());
+                            	 }
+                            listObjectsRequest.setMarker(objectListing.getNextMarker());
                              
                              
                          } while (objectListing.isTruncated());
