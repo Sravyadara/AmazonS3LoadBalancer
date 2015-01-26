@@ -2,10 +2,15 @@ package controllers;
 
 import java.util.List;
 import java.util.Map;
+
 import model.BucketDAO;
+
 import com.google.gson.Gson;
+import controllers.PSOAlgorithm;
+
 import play.mvc.*;
 import views.html.*;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
@@ -36,35 +41,62 @@ public class Application extends Controller {
     	return ok(jsonResponse);
     }
     
-    public static Result Requests(String reqNum) throws Exception{
+    public static Result Requests(String reqNum,String algorithm) throws Exception{
         	printHeaders();
      	    String jsonResponse;
+     	   System.out.println("Algorithm :  "+algorithm);
+     	   System.out.println("**************************");
             //System.out.println("sample----------------    test "+ reqNum);
             //System.out.println(request().body().toString());
             Map<String,String[]> jsonMap = request().body().asFormUrlEncoded();
             //TODO check for arrayOutOfBounds Exception if userName is not present in incoming request
             String json = jsonMap.get("username")[0];
+            System.out.println("json:"+json);
             String newJson = json.substring(2, json.length()-2);
             String st[] = newJson.split(",");
             String newSt[] = new String[st.length];
             String myargs[] = new String[st.length+1];
-            String justnums[] = new String[2];
             for(int i=0; i< st.length; i++)
             {
                 newSt[i] = st[i].replaceAll("\"", "");
-                //System.out.println(newSt[i]);
-                //justnums = newSt[i].split(" ");
-                myargs[i] = newSt[i];//justnums[1];
-                //System.out.println(myargs[i]);
+                myargs[i] = newSt[i];
+                
+                System.out.println("My args:"+myargs[i]);
             }
-            myargs[st.length] = reqNum;
-            s3modify alg = new s3modify();
-
-
-            alg.main(myargs);
+            if(algorithm.equals("honeybee"))
+            { 	
+            //Call your functions here
+            }
+            else if(algorithm.equals("pso"))
+            {
+            	  PSOAlgorithm psoAlgo = new PSOAlgorithm(s3handler);
+                  
+                  System.out.println("Initializing the SWARM");
+                  psoAlgo.initializeSwarm();
+	              for(String photoName: newSt){
+	                  for(int i=0; i< Integer.parseInt(reqNum); i++){
+	                  	String key = photoName;
+	                      try {
+	                          String bucketName = psoAlgo.getBucketToUpload();
+	                          System.out.println("Uploading " + key +" to "+ bucketName);
+	              			  s3handler.uploadPhotoToS3(bucketName, key);
+	              		} catch (IOException e) {
+	              			System.out.println("Unable to upload photo to S3 bucket due to" + e.getMessage());
+	              		}
+	                  }  
+                  }
+            }
+            else if(algorithm.equals("locationaware"))
+            {
+                 myargs[st.length] = reqNum;
+            	 s3modify alg = new s3modify();
+                 alg.main(myargs);
+            
+            }
             System.out.println("Done with alg");
                    return ok("success");
    }
+
 
    public static Result getRegions() throws IOException{
        printHeaders(); 

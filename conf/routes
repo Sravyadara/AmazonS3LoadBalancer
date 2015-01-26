@@ -9,7 +9,7 @@ GET    /compute/AmazonS3/GetBucketDetails                         controllers.Ap
 GET    /compute/AmazonS3/DisplayRegions                           controllers.Application.displayCountries()
 GET    /compute/AmazonS3/GetRegionsSize                       	  controllers.Application.getRegionsSize()
 GET    /compute/AmazonS3/BucketSize/:bucketName                   controllers.Application.bucketSize(bucketName:String)
-POST    /compute/AmazonS3/Requests/:reqNum                        controllers.Application.Requests(reqNum:String)
+POST   /compute/AmazonS3/Requests/:reqNum/:algorithm              controllers.Application.Requests(reqNum:String,algorithm:String)
 
 
 

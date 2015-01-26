@@ -20,14 +20,15 @@
         <script type="text/javascript">  
         
          JSONTest = function() {
-            var reqNum = document.getElementById('requestsnumber').value; 
+            var reqNum = document.getElementById('requestsnumber').value;
+            var algorithm = document.getElementById('algo').value; 
 		    //alert(reqNum);  
 		    var arr =  $("input[name='check']:checked").map(function(){
                     return this.value;
                    }).get()
             var data = JSON.stringify(arr);
-            var url = "http://localhost:9000/compute/AmazonS3/Requests/"+reqNum; 
-		     
+            var url = "http://localhost:9000/compute/AmazonS3/Requests/"+reqNum +"/"+algorithm; 
+		     alert(url);
             $.ajax({
                 url: url,
                 type: 'POST',
@@ -204,6 +205,17 @@
                                                 </label>
                                        
                                     </div><!-- /.box-body -->
+                                    
+                                     <div class="form-group">
+                                            <label>Select the Algorithm</label>
+                                            <select class="form-control" id="algo">
+                                                <option>Select the Algorithm</option>
+                                                <option value ="honeybee" >Honey Bee </option>
+                                                <option value ="pso">PSO</option>
+                                                <option value ="locationaware">LocationAware+LoadBalancing</option>
+                                
+                                            </select>
+                                        </div>
 
                                     <div class="submit-button">
                                         <button type="submit" onclick="JSONTest();" class="btn btn-primary1">Upload</button>

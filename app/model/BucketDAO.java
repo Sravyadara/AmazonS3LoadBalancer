@@ -39,6 +39,10 @@ public class BucketDAO{
 	public void setKeyList(List<String> keyList) {
 		this.keyList = keyList;
 	}
+	
+	public BucketDAO(){
+		
+	}
 
 	public BucketDAO(String name, Owner owner, Date creationDate, double bucketSize){
     	this.name =  name;

@@ -659,26 +659,26 @@ public class s3modify {
 			switch(tot)
 			{
 			case 0:
-				bucketnames.add("northcalidc1");
-				bucketnames.add("northcalidc2");
+				bucketnames.add("cmpnorthcalidc1");
+				bucketnames.add("cmpnorthcalidc2");
 				break;
 			case 1:
-				bucketnames.add("oregonidc1");
-				bucketnames.add("oregonidc2");
-				bucketnames.add("oregonidc3");
+				bucketnames.add("cmporegonidc1");
+				bucketnames.add("cmporegonidc2");
+				bucketnames.add("cmporegonidc3");
 				break;
 			case 2:
-				bucketnames.add("singaporeidc1");
-				bucketnames.add("singaporeidc2");
-				bucketnames.add("singaporeidc3");
+				bucketnames.add("cmpsingaporeidc1");
+				bucketnames.add("cmpsingaporeidc2");
+				bucketnames.add("cmpsingaporeidc3");
 				break;
 			case 3:
-				bucketnames.add("sydneyidc1");
-				bucketnames.add("sydneyidc2");
+				bucketnames.add("cmpsydneyidc1");
+				bucketnames.add("cmpsydneyidc2");
 				break;
 			case 4:
-				bucketnames.add("tokyoidc1");
-				bucketnames.add("tokyoidc2");
+				bucketnames.add("cmptokyoidc1");
+				bucketnames.add("cmptokyoidc2");
 				break;
 			}
 			long totLoad = 0;
