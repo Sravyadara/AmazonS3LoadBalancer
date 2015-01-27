@@ -10,7 +10,7 @@ GET    /compute/AmazonS3/DisplayRegions                           controllers.Ap
 GET    /compute/AmazonS3/GetRegionsSize                       	  controllers.Application.getRegionsSize()
 GET    /compute/AmazonS3/BucketSize/:bucketName                   controllers.Application.bucketSize(bucketName:String)
 POST   /compute/AmazonS3/Requests/:reqNum/:algorithm              controllers.Application.Requests(reqNum:String,algorithm:String)
-
+POST    /compute/AmazonS3/SingleRequests/:reqNum                        controllers.Application.SingleRequests(reqNum:String)
 
 
 # Map static resources from the /public folder to the /assets URL path

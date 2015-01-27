@@ -52,8 +52,11 @@ public class Application extends Controller {
             //TODO check for arrayOutOfBounds Exception if userName is not present in incoming request
             String json = jsonMap.get("username")[0];
             System.out.println("json:"+json);
+            System.out.println(json.getClass());
             String newJson = json.substring(2, json.length()-2);
+            System.out.println(newJson);
             String st[] = newJson.split(",");
+            System.out.println(st);
             String newSt[] = new String[st.length];
             String myargs[] = new String[st.length+1];
             for(int i=0; i< st.length; i++)
@@ -65,7 +68,19 @@ public class Application extends Controller {
             }
             if(algorithm.equals("honeybee"))
             { 	
-            //Call your functions here
+            	printHeaders();
+            	//String output = "";
+            	System.out.println("Executing HoneyBee Algorithm");
+            	
+            	String cmd = "/usr/bin/python " + userHome + "/pythonscripts/honeyBee.py " + reqNum + " " +  json;
+            	System.out.println(cmd);
+            	Process p = Runtime.getRuntime().exec(cmd);
+            	BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            	Object line;
+                while((line = in.readLine()) != null) {
+                     System.out.println(line);
+                }
+                
             }
             else if(algorithm.equals("pso"))
             {
@@ -146,6 +161,34 @@ public class Application extends Controller {
        return ok(jsonResponse);
 
    }
+
+   public static Result SingleRequests(String reqNum) throws Exception{
+        printHeaders();
+        String jsonResponse;
+
+        Map<String,String[]> jsonMap = request().body().asFormUrlEncoded();
+        //TODO check for arrayOutOfBounds Exception if userName is not present in incoming request
+        String json = jsonMap.get("username")[0];
+        String newJson = json.substring(2, json.length()-2);
+        String st[] = newJson.split(",");
+        String newSt[] = new String[st.length];
+        String myargs[] = new String[st.length+1];
+        String justnums[] = new String[2];
+        for(int i=0; i< st.length; i++)
+        {
+            newSt[i] = st[i].replaceAll("\"", "");
+            //System.out.println(newSt[i]);
+            //justnums = newSt[i].split(" ");
+            myargs[i] = newSt[i];//justnums[1];
+            //System.out.println(myargs[i]);
+        }
+        myargs[st.length] = reqNum;
+        s3modify alg = new s3modify();
+        alg.main(myargs);
+
+        System.out.println("Done with alg");
+               return ok("success");
+}
    
    
 }
