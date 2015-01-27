@@ -101,6 +101,13 @@ public class Application extends Controller {
 	                  }  
                   }
             }
+            else if(algorithm.equals("originallocationaware"))
+            {
+            	myargs[st.length] = reqNum;
+            	s3locationmodify algo = new s3locationmodify();
+                algo.main(myargs);
+            	
+            }
             else if(algorithm.equals("locationaware"))
             {
                  myargs[st.length] = reqNum;
